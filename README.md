@@ -36,7 +36,7 @@ graph TD
 - **Responsive Navigation:** Smooth animations transition the user to a dedicated video player.
 
 ### 📤 Video Upload & Storage Pipeline
-- **Google Realtime Database Integration:** Uploads `.mp4` video files and structures to Google Realtime Database.
+- **Firebase Storage Integration:** Uploads `.mp4` video files to a secure cloud bucket structure.
 - **Firestore Metadata Association:** Automatically binds video records to the authenticated uploader's email address and profile.
 - **Camera/Gallery Picker:** Seamless camera recording or gallery video picking using the native image picker interface.
 
@@ -58,7 +58,7 @@ graph TD
 | **UI Spec** | Material 3 (M3) | Fluid layouts, chip tokens, dynamic inputs |
 | **Authentication** | `firebase_auth` | User sessions and credential security |
 | **Database** | `cloud_firestore` | Real-time metadata storing and querying |
-| **Storage** | `firebase_database` | Video file hosting via Google Realtime Database |
+| **Storage** | `firebase_storage` | Video file hosting |
 | **Video Player** | `video_player` & `chewie` | Playback control and codec wrappers |
 | **Media Picker** | `image_picker` | Video capture and directory browsing |
 | **Utilities** | `uuid`, `intl`, `timeago` | Unique IDs, date formatting, relative time calculation |
@@ -84,7 +84,7 @@ lib/
 │   └── videos_feed_screen.dart  # Interactive feed stream list
 ├── services/
 │   ├── auth_service.dart     # Auth wrapper for sign-in/up/out
-│   └── video_service.dart    # Handles Google Realtime Database uploads and writes
+│   └── video_service.dart    # Handles Storage uploads and Firestore writes
 └── theme/
     └── app_theme.dart        # Custom Material 3 themes configuration
 ```
