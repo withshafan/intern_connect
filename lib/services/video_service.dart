@@ -113,10 +113,14 @@ class VideoService {
   }
 
   // Get all videos ordered by upload time (newest first)
-  Stream<List<InternVideo>> getVideos() {
-    // Ensure DB is initialized
-    database;
-    return _videosStreamController.stream;
+  Stream<List<InternVideo>> getVideos() async* {
+    // Yield the initial database state immediately upon UI subscription
+    final db = await database;
+    final maps = await db.query('videos', orderBy: 'uploadedAt DESC');
+    yield maps.map((map) => InternVideo.fromMap(map['id'] as String, map)).toList();
+
+    // Then yield any future updates
+    yield* _videosStreamController.stream;
   }
 
   Future<void> deleteVideo(InternVideo video) async {
