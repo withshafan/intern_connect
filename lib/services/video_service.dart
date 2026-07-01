@@ -118,4 +118,31 @@ class VideoService {
     database;
     return _videosStreamController.stream;
   }
+
+  Future<void> deleteVideo(InternVideo video) async {
+    final db = await database;
+    await db.delete('videos', where: 'id = ?', whereArgs: [video.id]);
+    
+    // delete local files
+    if (await File(video.videoUrl).exists()) {
+      await File(video.videoUrl).delete();
+    }
+    if (video.thumbnailUrl.isNotEmpty && await File(video.thumbnailUrl).exists()) {
+      await File(video.thumbnailUrl).delete();
+    }
+
+    _broadcastVideos();
+  }
+
+  Future<void> updateVideo(String id, String name, String nickname, String academic, String interests) async {
+    final db = await database;
+    await db.update('videos', {
+      'name': name,
+      'nickname': nickname,
+      'academicBackground': academic,
+      'techInterests': interests,
+    }, where: 'id = ?', whereArgs: [id]);
+
+    _broadcastVideos();
+  }
 }
