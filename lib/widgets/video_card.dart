@@ -35,9 +35,9 @@ class VideoCard extends StatelessWidget {
                 tag: thumbnailUrl,
                 child: thumbnailUrl.isNotEmpty
                     ? Image.network(thumbnailUrl, fit: BoxFit.cover)
-                    : const Container(
+                    : Container(
                         color: Colors.grey,
-                        child: Icon(Icons.videocam, size: 50, color: Colors.white),
+                        child: const Icon(Icons.videocam, size: 50, color: Colors.white),
                       ),
               ),
             ),
