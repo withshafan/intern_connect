@@ -48,6 +48,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   path_provider: ^2.1.1
   timeago: ^3.6.1
+  google_fonts: ^8.1.0
 
 dev_dependencies:
   flutter_test:
