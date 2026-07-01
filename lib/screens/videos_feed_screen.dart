@@ -24,7 +24,16 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
         stream: _videoService.getVideos(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return MasonryGridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              padding: const EdgeInsets.all(8),
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                return const VideoCardShimmer();
+              },
+            );
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
