@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shimmer/shimmer.dart';
+import 'package:intern_connect/theme/app_colors.dart';
 
 class VideoCard extends StatelessWidget {
   final String thumbnailUrl;
@@ -36,8 +37,8 @@ class VideoCard extends StatelessWidget {
                 child: thumbnailUrl.isNotEmpty
                     ? Image.network(thumbnailUrl, fit: BoxFit.cover)
                     : Container(
-                        color: Colors.grey,
-                        child: const Icon(Icons.videocam, size: 50, color: Colors.white),
+                        color: AppColors.ink,
+                        child: const Icon(Icons.videocam, size: 50, color: AppColors.slate),
                       ),
               ),
             ),
@@ -55,7 +56,9 @@ class VideoCard extends StatelessWidget {
                       children: techInterests
                           .take(2)
                           .map((t) => Chip(
-                                label: Text(t, style: const TextStyle(fontSize: 10)),
+                                label: Text(t, style: const TextStyle(fontSize: 10, color: AppColors.ink)),
+                                backgroundColor: AppColors.growTeal,
+                                side: BorderSide.none,
                                 visualDensity: VisualDensity.compact,
                                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ))
@@ -63,7 +66,7 @@ class VideoCard extends StatelessWidget {
                     ),
                   const SizedBox(height: 4),
                   Text(timeago.format(uploadedAt),
-                      style: Theme.of(context).textTheme.bodySmall),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.slate)),
                 ],
               ),
             ),
@@ -81,9 +84,10 @@ class VideoCardShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
+      color: AppColors.ink, // Match background so it blends better
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+        baseColor: AppColors.slate.withOpacity(0.2),
+        highlightColor: AppColors.slate.withOpacity(0.4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
