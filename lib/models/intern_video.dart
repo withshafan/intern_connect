@@ -5,6 +5,7 @@ class InternVideo {
   final String academicBackground;
   final String techInterests;
   final String videoUrl;
+  final String thumbnailUrl;
   final String uploadedBy; // email of the user who uploaded
   final DateTime uploadedAt;
 
@@ -15,6 +16,7 @@ class InternVideo {
     required this.academicBackground,
     required this.techInterests,
     required this.videoUrl,
+    required this.thumbnailUrl,
     required this.uploadedBy,
     required this.uploadedAt,
   });
@@ -28,6 +30,7 @@ class InternVideo {
       academicBackground: map['academicBackground'] ?? '',
       techInterests: map['techInterests'] ?? '',
       videoUrl: map['videoUrl'] ?? '',
+      thumbnailUrl: map['thumbnailUrl'] ?? '',
       uploadedBy: map['uploadedBy'] ?? '',
       uploadedAt: (map['uploadedAt'] as dynamic).toDate(),
     );
@@ -41,6 +44,7 @@ class InternVideo {
       'academicBackground': academicBackground,
       'techInterests': techInterests,
       'videoUrl': videoUrl,
+      'thumbnailUrl': thumbnailUrl,
       'uploadedBy': uploadedBy,
       'uploadedAt': uploadedAt,
     };
