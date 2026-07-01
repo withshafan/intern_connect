@@ -21,10 +21,10 @@ class InternVideo {
     required this.uploadedAt,
   });
 
-  // Convert from Firestore document
-  factory InternVideo.fromMap(String id, Map<String, dynamic> map) {
+  // Convert from database map (SQLite or Firestore)
+  factory InternVideo.fromMap(String documentId, Map<String, dynamic> map) {
     return InternVideo(
-      id: id,
+      id: map['id'] ?? documentId,
       name: map['name'] ?? '',
       nickname: map['nickname'] ?? '',
       academicBackground: map['academicBackground'] ?? '',
@@ -32,13 +32,16 @@ class InternVideo {
       videoUrl: map['videoUrl'] ?? '',
       thumbnailUrl: map['thumbnailUrl'] ?? '',
       uploadedBy: map['uploadedBy'] ?? '',
-      uploadedAt: (map['uploadedAt'] as dynamic).toDate(),
+      uploadedAt: map['uploadedAt'] is int
+          ? DateTime.fromMillisecondsSinceEpoch(map['uploadedAt'] as int)
+          : (map['uploadedAt'] as dynamic).toDate(),
     );
   }
 
-  // Convert to Firestore document
+  // Convert to SQLite/Firestore map
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'nickname': nickname,
       'academicBackground': academicBackground,
@@ -46,7 +49,7 @@ class InternVideo {
       'videoUrl': videoUrl,
       'thumbnailUrl': thumbnailUrl,
       'uploadedBy': uploadedBy,
-      'uploadedAt': uploadedAt,
+      'uploadedAt': uploadedAt.millisecondsSinceEpoch,
     };
   }
 }
