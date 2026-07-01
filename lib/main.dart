@@ -18,8 +18,6 @@ class InternConnectApp extends StatelessWidget {
       title: 'InternConnect',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      themeMode: ThemeMode.system,
-      darkTheme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       home: const SplashScreen(),
     );
   }
