@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intern_connect/models/intern_video.dart';
 import 'package:intern_connect/services/video_service.dart';
+import 'package:intern_connect/widgets/video_card.dart';
 import 'upload_video_screen.dart';
 import 'video_player_screen.dart';
 
@@ -35,29 +37,32 @@ class _VideosFeedScreenState extends State<VideosFeedScreen> {
               ),
             );
           }
-          return ListView.builder(
+          return MasonryGridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            padding: const EdgeInsets.all(8),
             itemCount: videos.length,
             itemBuilder: (context, index) {
               final video = videos[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.deepPurple,
-                    child: Icon(Icons.person, color: Colors.white),
-                  ),
-                  title: Text(video.name),
-                  subtitle: Text(video.academicBackground),
-                  trailing: const Icon(Icons.play_circle_fill),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => VideoPlayerScreen(video: video),
-                      ),
-                    );
-                  },
-                ),
+              return VideoCard(
+                thumbnailUrl: video.thumbnailUrl,
+                name: video.name,
+                nickname: video.nickname,
+                techInterests: video.techInterests
+                    .split(',')
+                    .map((e) => e.trim())
+                    .where((e) => e.isNotEmpty)
+                    .toList(),
+                uploadedAt: video.uploadedAt,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => VideoPlayerScreen(video: video),
+                    ),
+                  );
+                },
               );
             },
           );
