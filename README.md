@@ -1,5 +1,7 @@
 # 🚀 InternConnect
 
+### 📲 [Download the Android APK Release Here](https://drive.google.com/file/d/16QrAGyfqzjFqhD7wS27qusK6MSCCyeLd/view?usp=sharing)
+
 A modern, high-performance Flutter mobile application designed to connect and onboard interns. InternConnect provides a scannable, interactive space where interns can upload short video introductions, share their academic backgrounds, display their tech interests, and build professional networks within their cohort.
 
 Built with **Flutter (Material 3)** and powered by **Firebase**, this application leverages a modular, scalable architecture engineered for speed, clean state management, and an exceptional user experience.
@@ -43,6 +45,10 @@ graph TD
 ### ▶️ Premium Video Playback
 - **Chewie & Video Player Integration:** Native aspect ratio video playback with embedded seek, volume, and playback speed controllers.
 - **Uploader Profile Cards:** Displays associated uploader info underneath the playback console.
+
+### ⚙️ Video Management & Sharing
+- **Full CRUD Control:** Uploader-exclusive permissions to seamlessly Edit metadata or Delete their video records from the cloud.
+- **Native Exporting:** Share content instantly to other apps using native iOS/Android share sheets.
 
 ### 👤 Interactive Profile Management
 - **User Dashboard:** Dedicated panel displaying user credentials and account settings.
@@ -124,7 +130,8 @@ flutter run
 
 ## 🔮 Roadmap / Future Enhancements
 - [ ] **Staggered Grid View:** Migrate the feed into a 2-column masonry grid.
-- [ ] **Thumbnail Generation:** Auto-create video frame snapshots during upload.
+- [x] **Thumbnail Generation:** Auto-create video frame snapshots during upload.
+- [x] **Video Management:** Edit, Delete, and Share functionality.
 - [ ] **Likes & Reactions:** Allow interns to upvote or interact with video profiles.
 - [ ] **Search & Tag Filters:** Filter users by tech tags (Flutter, AI/ML, Web, Cloud) and name/nickname queries.
 - [ ] **Richer Profiles:** Editable biographies, GitHub/LinkedIn links, and a personal video grid.
