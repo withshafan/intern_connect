@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intern_connect/screens/splash_screen.dart';
+import 'package:intern_connect/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,10 +17,9 @@ class InternConnectApp extends StatelessWidget {
     return MaterialApp(
       title: 'InternConnect',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light(),
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       home: const SplashScreen(),
     );
   }
