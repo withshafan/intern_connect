@@ -1,6 +1,6 @@
 # 🚀 InternConnect
 
-### 📲 [Download the Android APK Release Here](https://drive.google.com/file/d/16QrAGyfqzjFqhD7wS27qusK6MSCCyeLd/view?usp=sharing)
+### 📲 [Download the Android APK Release Here](https://drive.google.com/file/d/1Zl3mpJI2jM2cyAW5ka1vQXFWYV69SLjV/view?usp=sharing)
 
 A modern, high-performance Flutter mobile application designed to connect and onboard interns. InternConnect provides a scannable, interactive space where interns can upload short video introductions, share their academic backgrounds, display their tech interests, and build professional networks within their cohort.
 
