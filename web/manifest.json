@@ -1,6 +1,6 @@
 {
-    "name": "intern_connect",
-    "short_name": "intern_connect",
+    "name": "Intern Connect",
+    "short_name": "Intern Connect",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
