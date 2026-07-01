@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intern_connect/models/intern_video.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:path_provider/path_provider.dart';
 
 class VideoService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -19,19 +21,41 @@ class VideoService {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) throw Exception('User not logged in');
 
-    // 1. Upload video to Storage
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}_${user.uid}.mp4';
-    final ref = _storage.ref().child('introduction_videos/$fileName');
-    await ref.putFile(videoFile);
-    final videoUrl = await ref.getDownloadURL();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-    // 2. Save metadata to Firestore
+    // 1. Generate thumbnail
+    final tempDir = await getTemporaryDirectory();
+    final thumbnailPath = await VideoThumbnail.thumbnailFile(
+      video: videoFile.path,
+      thumbnailPath: tempDir.path,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 512, // reduce size for faster loading
+      quality: 75,
+    );
+
+    // 2. Upload video to Storage
+    final videoFileName = '${timestamp}_${user.uid}.mp4';
+    final videoRef = _storage.ref().child('introduction_videos/$videoFileName');
+    await videoRef.putFile(videoFile);
+    final videoUrl = await videoRef.getDownloadURL();
+
+    // 3. Upload thumbnail to Storage
+    String thumbnailUrl = '';
+    if (thumbnailPath != null) {
+      final thumbFileName = '${timestamp}_${user.uid}_thumb.jpg';
+      final thumbRef = _storage.ref().child('introduction_thumbnails/$thumbFileName');
+      await thumbRef.putFile(File(thumbnailPath));
+      thumbnailUrl = await thumbRef.getDownloadURL();
+    }
+
+    // 4. Save metadata to Firestore
     await _firestore.collection('videos').add({
       'name': name,
       'nickname': nickname,
       'academicBackground': academicBackground,
       'techInterests': techInterests,
       'videoUrl': videoUrl,
+      'thumbnailUrl': thumbnailUrl,
       'uploadedBy': user.email ?? 'unknown',
       'uploadedAt': FieldValue.serverTimestamp(),
     });
