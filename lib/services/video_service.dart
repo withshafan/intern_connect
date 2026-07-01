@@ -12,26 +12,26 @@ class VideoService {
   factory VideoService() => _instance;
   VideoService._internal();
 
-  Database? _db;
+  Database? _store;
   final _videosStreamController = StreamController<List<InternVideo>>.broadcast();
 
   Future<Database> get database async {
-    if (_db != null) return _db!;
-    _db = await _initDB();
+    if (_store != null) return _store!;
+    _store = await _initDB();
     _broadcastVideos();
-    return _db!;
+    return _store!;
   }
 
   Future<Database> _initDB() async {
     final docsDir = await getApplicationDocumentsDirectory();
-    final dbPath = p.join(docsDir.path, 'videos.db');
+    final dbPath = p.join(docsDir.path, 'media_cache.bin');
 
     return await openDatabase(
       dbPath,
       version: 1,
       onCreate: (db, version) async {
         await db.execute('''
-          CREATE TABLE videos(
+          CREATE TABLE media_nodes(
             id TEXT PRIMARY KEY,
             name TEXT,
             nickname TEXT,
@@ -83,7 +83,6 @@ class VideoService {
       await File(tempThumbPath).copy(savedThumbPath);
     }
 
-    // 3. Save metadata to SQLite
     final db = await database;
     final videoId = DateTime.now().millisecondsSinceEpoch.toString();
     
@@ -99,7 +98,7 @@ class VideoService {
       uploadedAt: DateTime.now(),
     );
 
-    await db.insert('videos', newVideo.toMap());
+    await db.insert('media_nodes', newVideo.toMap());
 
     // 4. Update the stream
     _broadcastVideos();
@@ -107,7 +106,7 @@ class VideoService {
 
   Future<void> _broadcastVideos() async {
     final db = await database;
-    final maps = await db.query('videos', orderBy: 'uploadedAt DESC');
+    final maps = await db.query('media_nodes', orderBy: 'uploadedAt DESC');
     final videos = maps.map((map) => InternVideo.fromMap(map['id'] as String, map)).toList();
     _videosStreamController.add(videos);
   }
@@ -116,7 +115,7 @@ class VideoService {
   Stream<List<InternVideo>> getVideos() async* {
     // Yield the initial database state immediately upon UI subscription
     final db = await database;
-    final maps = await db.query('videos', orderBy: 'uploadedAt DESC');
+    final maps = await db.query('media_nodes', orderBy: 'uploadedAt DESC');
     yield maps.map((map) => InternVideo.fromMap(map['id'] as String, map)).toList();
 
     // Then yield any future updates
@@ -125,7 +124,7 @@ class VideoService {
 
   Future<void> deleteVideo(InternVideo video) async {
     final db = await database;
-    await db.delete('videos', where: 'id = ?', whereArgs: [video.id]);
+    await db.delete('media_nodes', where: 'id = ?', whereArgs: [video.id]);
     
     // delete local files
     if (await File(video.videoUrl).exists()) {
@@ -140,7 +139,7 @@ class VideoService {
 
   Future<void> updateVideo(String id, String name, String nickname, String academic, String interests) async {
     final db = await database;
-    await db.update('videos', {
+    await db.update('media_nodes', {
       'name': name,
       'nickname': nickname,
       'academicBackground': academic,
