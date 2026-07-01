@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shimmer/shimmer.dart';
@@ -35,7 +36,9 @@ class VideoCard extends StatelessWidget {
               child: Hero(
                 tag: thumbnailUrl,
                 child: thumbnailUrl.isNotEmpty
-                    ? Image.network(thumbnailUrl, fit: BoxFit.cover)
+                    ? (thumbnailUrl.startsWith('http')
+                        ? Image.network(thumbnailUrl, fit: BoxFit.cover)
+                        : Image.file(File(thumbnailUrl), fit: BoxFit.cover))
                     : Container(
                         color: AppColors.ink,
                         child: const Icon(Icons.videocam, size: 50, color: AppColors.slate),
