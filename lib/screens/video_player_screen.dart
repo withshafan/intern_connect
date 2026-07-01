@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -22,8 +23,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   Future<void> _initializePlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(widget.video.videoUrl));
+    if (widget.video.videoUrl.startsWith('http')) {
+      _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.video.videoUrl));
+    } else {
+      _videoPlayerController = VideoPlayerController.file(File(widget.video.videoUrl));
+    }
 
     await _videoPlayerController.initialize();
 
